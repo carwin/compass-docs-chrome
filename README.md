@@ -3,6 +3,9 @@
 This extension for Google Chrome provides a way to search the
 [Compass](http://compass-style.org) documentation from the omnibar.
 
+[View in the Chrome Web
+Store](https://chrome.google.com/webstore/detail/compass-documentation-sea/eiikanipkfnfcbmnaljbmckjpbdogakj)
+
 ![The extension in action](https://f.cloud.github.com/assets/715967/628445/f33717c8-d0b3-11e2-85d7-58aa9dbd6778.png)
 
 ## Usage

@@ -9,11 +9,12 @@ resetDefaultSuggestion();
 var searchSuggestions = function(str, obj) {
   var regex = new RegExp('^' + str, "i");
   var suggestionsArray = [];
-
+  
   for (var key in obj) {
     var arr = obj[key];
-    for (var i=0; i < arr.length; i++){
-      if (arr[i].match(regex)) {
+    for (var i=0; i < arr.length; i++) {
+      //console.log(arr[i]['path']);
+      if (arr[i]['name'].match(regex)) {
         suggestionsArray.push(arr[i]);
       }
     }
@@ -26,7 +27,7 @@ var searchSuggestionCategory = function(str, obj) {
   for (var key in obj) {
     var arr = obj[key];
     for (var i=0; i < arr.length; i++) {
-      if (arr[i] === str) {
+      if (arr[i]['name'] === str) {
         category = key;
       }
     }
@@ -50,7 +51,7 @@ chrome.omnibox.onInputChanged.addListener( function(text, suggest) {
 
   for (var i=0; i < lastSuggestion; i++) {
     suggest([
-      {content: suggestions[i], description: suggestions[i] }
+      {content: suggestions[i]['name'], description: suggestions[i]['name'] }
     ]);
   }
 });
@@ -68,11 +69,13 @@ var navigate = function(url) {
 chrome.omnibox.onInputEntered.addListener( function(text) {
   var categorizedSuggestions;
   var wasSuggested;
+  var path;
   var suggestions = searchSuggestions(text,compassSuggestions);
 
   for (var i=0; i < suggestions.length; i++) {
-    if (suggestions[i] == text) {
+    if (suggestions[i]['name'] == text) {
       wasSuggested = true;
+      path = suggestions[i]['path'];
     }
     else {
       wasSuggested = false;
@@ -81,8 +84,7 @@ chrome.omnibox.onInputEntered.addListener( function(text) {
 
   if (wasSuggested === true) {
     var category = searchSuggestionCategory(text, compassSuggestions).toLowerCase();
-    var text = text.toLowerCase().replace(/ /g,'_');
-    navigate('http://compass-style.org/reference/compass/' + category + '/' + text);
+    navigate('http://compass-style.org/reference/compass/' + category + '/' + path);
   }
   else {
     navigate("http://compass-style.org/search/?q=" + text);
